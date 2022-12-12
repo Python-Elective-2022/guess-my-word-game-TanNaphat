@@ -72,12 +72,12 @@ def get_guessed_word(secret_word, letters_guessed):
       what letters in secret_word have been guessed so far.
     '''
     full_word = ""
-    for i in secret_word:
-      if i in letters_guessed:
-        full_word += i
+    for letter in secret_word:
+      if letter in letters_guessed:
+        full_word += letter + " "
         pass
       else:
-        full_word += "_"
+        full_word += "_ "
     return full_word
     
 
@@ -92,25 +92,15 @@ def get_available_letters(letters_guessed):
     returns: string, comprised of letters that represents what letters have not
       yet been guessed.
     '''
-    letters_not_guessed = "abcdefghijklmnopqrstuvwxyz"
-    letters_guessed = ''.join(map(str,letters_guessed))
+    letters_not_guessed = string.ascii_lowercase
     for char in letters_guessed:
       letters_not_guessed = letters_not_guessed.replace(char, "")
     return letters_not_guessed
       
-def Convert(string):
-    '''
-    string: string, what you are tyring to convert
-    return: the list in string form
-    '''
-    list1 = []
-    list1[:0] = string
-    return list1
-
 #Testcases 
 #print(get_available_letters(['e', 'i', 'k', 'p', 'r', 's']))
 #print(get_available_letters(['r', 'y', 'd', 'u', 't']))
-  
+
 def game_loop(secret_word):
     '''
     secret_word: string, the secret word to guess.
@@ -128,19 +118,18 @@ def game_loop(secret_word):
     print('Reading word_listfile...')
     print('55900 words found')
     print('Let the game begin!')
-    full_word = ""
     letters_guessed = []
     number_of_guesses = 8
     end_game = False
     print("I am thinking of a word with", len(secret_word), "letters.")
     while number_of_guesses != 0 and end_game == False:
       print('You have', number_of_guesses, 'guesses left.')
-      print('Letters avalible to you:', get_available_letters(letters_guessed))
+      print('Letters avalible to you:', get_available_letters(letters_guessed).replace(" ", ""))
       guessing_letter = input("Guess a letter: ")
       if guessing_letter in letters_guessed:
         letters_guessed.append(guessing_letter)
         print('You fool! You tried this letter already: ', get_guessed_word(secret_word, letters_guessed))
-      elif guessing_letter in Convert(secret_word):
+      elif guessing_letter in list(secret_word):
         letters_guessed.append(guessing_letter)
         print('Correct:', get_guessed_word(secret_word, letters_guessed))
       else:
